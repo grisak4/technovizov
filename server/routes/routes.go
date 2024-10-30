@@ -18,11 +18,6 @@ import (
 func InitRoutes(router *gin.Engine, db *gorm.DB) {
 	cors.InitCors(router)
 
-	// // test
-	// router.GET("/hello", func(c *gin.Context) {
-	// 	hello.GetHello(c)
-	// })
-
 	// authorization
 	router.POST("/register", func(c *gin.Context) {
 		register.PostRegisterNewUser(c, db)
@@ -31,12 +26,20 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 		login.PostLoginUser(c, db)
 	})
 
-	// auth middleware
-	authRoutes := router.Group("/auth")
-	authRoutes.Use(auth.AuthMiddleware())
+	// routes
+	userRoutes := router.Group("/auth")
+	userRoutes.Use(auth.AuthMiddleware([]string{"user"}))
 	{
-		authRoutes.GET("/hello", func(c *gin.Context) {
-			hello.GetHello(c)
+		userRoutes.GET("/hello", func(c *gin.Context) {
+			hello.GetHelloUser(c)
+		})
+	}
+
+	adminRoutes := router.Group("/admin")
+	adminRoutes.Use(auth.AuthMiddleware([]string{"admin"}))
+	{
+		adminRoutes.GET("/hello", func(c *gin.Context) {
+			hello.GetHelloAdmin(c)
 		})
 	}
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func AuthMiddleware() gin.HandlerFunc {
+func AuthMiddleware(allowedRoles []string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := c.GetHeader("Authorization")
 		if tokenString == "" {
@@ -33,14 +33,26 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
 		if !token.Valid {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Недействительный токен"})
 			c.Abort()
 			return
 		}
 
-		c.Set("username", claims.Username)
+		roleAllowed := false
+		for _, role := range allowedRoles {
+			if claims.Role == role {
+				roleAllowed = true
+				break
+			}
+		}
+		if !roleAllowed {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Forbidden"})
+			c.Abort()
+			return
+		}
+
+		c.Set("login", claims.Login)
 		c.Next()
 	}
 }

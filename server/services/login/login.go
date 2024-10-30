@@ -18,10 +18,10 @@ func PostLoginUser(c *gin.Context, db *gorm.DB) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "invalid request",
 		})
-		log.Fatalf("Error with authorization user: %s", err)
+		log.Printf("Error with authorization user: %s\n", err)
 	}
 
-	result := db.Where("username = ? AND password = ?", userForm.Username, userForm.Password).First(&userForm)
+	result := db.Where("login = ? AND password = ?", userForm.Login, userForm.Password).First(&userForm)
 	if result.Error != nil {
 		if result.Error == gorm.ErrRecordNotFound {
 			c.JSON(http.StatusUnauthorized, gin.H{
@@ -38,9 +38,9 @@ func PostLoginUser(c *gin.Context, db *gorm.DB) {
 		return
 	}
 
-	jwtToken, err := utilsjwt.GenerateJWT(userForm.Username, userForm.Password)
+	jwtToken, err := utilsjwt.GenerateJWT(userForm.Login, userForm.Role)
 	if err != nil {
-		log.Fatalf("Error with generate jwt: %s", err)
+		log.Printf("Error with generate jwt: %s\n", err)
 		return
 	}
 	log.Println("jwttoken: ", jwtToken)
