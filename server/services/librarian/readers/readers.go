@@ -11,6 +11,39 @@ import (
 	"gorm.io/gorm"
 )
 
+func PatchEditReader(c *gin.Context, db *gorm.DB) {
+	var reader models.Reader
+
+	id := c.Param("id")
+	log.Println("Rabotaet")
+	if err := db.Find(&reader, id).Error; err != nil {
+		log.Printf("error with finding reader: %s\n", err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	if err := c.ShouldBindJSON(&reader); err != nil {
+		log.Printf("error with reading reader: %s\n", err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	if err := db.Save(&reader).Error; err != nil {
+		log.Printf("error with saving reader: %s\n", err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": "succesfully changed",
+	})
+}
+
 func PostCreateReader(c *gin.Context, db *gorm.DB) {
 	var newReader models.Reader
 

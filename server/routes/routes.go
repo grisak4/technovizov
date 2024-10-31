@@ -35,7 +35,7 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 	adminRoutes := router.Group("/librarian")
 	adminRoutes.Use(auth.AuthMiddleware([]string{"librarian"}))
 	{
-		//get
+		// get
 		adminRoutes.GET("/hello", func(c *gin.Context) {
 			hello.GetHelloAdmin(c)
 		})
@@ -43,9 +43,14 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 			readers.GetAllReaders(c, db)
 		})
 
-		//post
+		// post
 		adminRoutes.POST("/addreader", func(c *gin.Context) {
 			readers.PostCreateReader(c, db)
+		})
+
+		// patch
+		adminRoutes.PATCH("/changereader/:id", func(c *gin.Context) {
+			readers.PatchEditReader(c, db)
 		})
 	}
 }
