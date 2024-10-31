@@ -12,7 +12,7 @@ import (
 )
 
 func PostLoginUser(c *gin.Context, db *gorm.DB) {
-	var userForm models.Users
+	var userForm models.User
 
 	if err := c.BindJSON(&userForm); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

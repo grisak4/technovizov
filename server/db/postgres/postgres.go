@@ -24,7 +24,7 @@ func ConnectDB() {
 		log.Fatalf("Error connecting to the database: %s", err)
 	}
 
-	err = db.AutoMigrate(&models.Users{}, &models.Readers{})
+	err = db.AutoMigrate(&models.User{}, &models.Reader{}, &models.Librarian{}, &models.Book{}, &models.IssueBooks{})
 	if err != nil {
 		log.Fatalf("Error migrating the database: %s", err)
 	}

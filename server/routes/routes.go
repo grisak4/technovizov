@@ -6,10 +6,9 @@ import (
 	"technovizov/middlewares/cors"
 
 	////
+	"technovizov/services/auth/login"
 	"technovizov/services/hello"
 	"technovizov/services/librarian/readers"
-	"technovizov/services/login"
-	"technovizov/services/register"
 
 	////
 	"github.com/gin-gonic/gin"
@@ -20,24 +19,21 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 	cors.InitCors(router)
 
 	// authorization
-	router.POST("/register", func(c *gin.Context) {
-		register.PostRegisterNewUser(c, db)
-	})
 	router.POST("/login", func(c *gin.Context) {
 		login.PostLoginUser(c, db)
 	})
 
 	// routes
-	userRoutes := router.Group("/auth")
-	userRoutes.Use(auth.AuthMiddleware([]string{"user"}))
+	userRoutes := router.Group("/reader")
+	userRoutes.Use(auth.AuthMiddleware([]string{"reader"}))
 	{
 		userRoutes.GET("/hello", func(c *gin.Context) {
 			hello.GetHelloUser(c)
 		})
 	}
 
-	adminRoutes := router.Group("/admin")
-	adminRoutes.Use(auth.AuthMiddleware([]string{"admin"}))
+	adminRoutes := router.Group("/librarian")
+	adminRoutes.Use(auth.AuthMiddleware([]string{"librarian"}))
 	{
 		//get
 		adminRoutes.GET("/hello", func(c *gin.Context) {
@@ -49,7 +45,7 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 
 		//post
 		adminRoutes.POST("/addreader", func(c *gin.Context) {
-			readers.PostReaders(c, db)
+			readers.PostCreateReader(c, db)
 		})
 	}
 }

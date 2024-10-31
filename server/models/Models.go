@@ -1,28 +1,62 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
-type Users struct {
-	ID        uint      `gorm:"primaryKey"`
-	Login     string    `gorm:"unique;not null" json:"login"`
-	Password  string    `gorm:"not null" json:"password"`
-	Role      string    `gorm:"not null;default:reader" json:"role"`
-	CreatedAt time.Time `json:"created_at"`
+type User struct {
+	ID       uint   `gorm:"primaryKey"`
+	Login    string `gorm:"unique" json:"login"`
+	Password string `json:"password"`
+	Role     string `json:"role"`
+
+	Librarian *Librarian `gorm:"constraint:OnDelete:CASCADE;"`
+	Reader    *Reader    `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
-type Readers struct {
-	Users
-	SurName    string    `json:"surname"`
-	FirstName  string    `json:"firstname"`
-	Patronymic string    `json:"patronymic"`
-	Phone      string    `json:"phone"`
-	EntryDate  time.Time `json:"entry_date"`
+type Reader struct {
+	ID          uint      `gorm:"primaryKey"`
+	UserID      uint      `gorm:"uniqueIndex"`
+	LibraryCard string    `json:"library_card"`
+	Surname     string    `json:"sur_name"`
+	FirstName   string    `json:"first_name"`
+	Patronymic  string    `json:"patronymic"`
+	Address     string    `json:"address"`
+	Phone       string    `json:"phone"`
+	DateEntry   time.Time `json:"data_entry"`
+
+	IssueBooks []IssueBooks `gorm:"foreignKey:ReaderID"` // один ко многим
 }
 
-type Books struct {
+type Librarian struct {
+	ID         uint   `gorm:"primaryKey"`
+	UserID     uint   `gorm:"uniqueIndex"`
+	Surname    string `json:"sur_name"`
+	FirstName  string `json:"first_name"`
+	Patronymic string `json:"patronymic"`
+
+	IssueBooks []IssueBooks `gorm:"foreignKey:LibrarianID"` // один ко многим
+}
+
+type Book struct {
 	ID     uint   `gorm:"primaryKey"`
-	Name   string `gorm:"unique" json:"name"`
+	Title  string `json:"title"`
 	Author string `json:"author"`
 	Genre  string `json:"genre"`
 	Count  int    `json:"count"`
+
+	IssueBooks []IssueBooks `gorm:"foreignKey:BookID"` // один ко многим
+}
+
+type IssueBooks struct {
+	ID          uint `gorm:"primaryKey"`
+	ReaderID    uint
+	LibrarianID uint
+	BookID      uint
+	IssueDate   time.Time
+	ReturnDate  time.Time
+
+	Reader    Reader    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Librarian Librarian `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Book      Book      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
