@@ -25,7 +25,7 @@ type Reader struct {
 	Phone       string    `json:"phone"`
 	DateEntry   time.Time `json:"data_entry"`
 
-	IssueBooks []IssueBooks `gorm:"foreignKey:ReaderID"` // один ко многим
+	IssueBooks []IssueBooks `gorm:"foreignKey:ReaderID"` // один ко многим d
 }
 
 type Librarian struct {
