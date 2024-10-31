@@ -1,7 +1,7 @@
 package main
 
 import (
-	"loginform/app"
+	"technovizov/app"
 )
 
 func main() {

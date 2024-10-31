@@ -1,4 +1,4 @@
-module loginform
+module technovizov
 
 go 1.22.4
 

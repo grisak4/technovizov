@@ -2,17 +2,17 @@ package login
 
 import (
 	"log"
-	"loginform/models"
 	"net/http"
+	"technovizov/models"
 
-	utilsjwt "loginform/utils/jwt"
+	utilsjwt "technovizov/utils/jwt"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 func PostLoginUser(c *gin.Context, db *gorm.DB) {
-	var userForm models.User
+	var userForm models.Users
 
 	if err := c.BindJSON(&userForm); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

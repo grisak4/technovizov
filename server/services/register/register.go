@@ -2,15 +2,17 @@ package register
 
 import (
 	"log"
-	"loginform/models"
 	"net/http"
+	"technovizov/models"
+	"technovizov/utils/dbhelper"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 func PostRegisterNewUser(c *gin.Context, db *gorm.DB) {
-	var newUser models.User
+	var newUser models.Users
+	var newReader models.Readers
 
 	if err := c.ShouldBindJSON(&newUser); err != nil {
 		log.Printf("Error with reading user: %s\n", err)
@@ -21,6 +23,14 @@ func PostRegisterNewUser(c *gin.Context, db *gorm.DB) {
 	}
 
 	if err := db.Create(&newUser).Error; err != nil {
+		log.Printf("Error with adding user to db: %s\n", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	if err := dbhelper.CreateUserWithReader(db, newUser, newReader); err != nil {
 		log.Printf("Error with adding user to db: %s\n", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),

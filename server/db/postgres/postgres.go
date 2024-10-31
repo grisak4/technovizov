@@ -3,8 +3,8 @@ package postgres
 import (
 	"fmt"
 	"log"
-	pg "loginform/config/getconfs/dbconfpostgres"
-	"loginform/models"
+	pg "technovizov/config/getconfs/dbconfpostgres"
+	"technovizov/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -24,7 +24,7 @@ func ConnectDB() {
 		log.Fatalf("Error connecting to the database: %s", err)
 	}
 
-	err = db.AutoMigrate(&models.User{})
+	err = db.AutoMigrate(&models.Users{}, &models.Readers{})
 	if err != nil {
 		log.Fatalf("Error migrating the database: %s", err)
 	}

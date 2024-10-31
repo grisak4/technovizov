@@ -1,10 +1,10 @@
 package app
 
 import (
-	"loginform/config"
-	server "loginform/config/getconfs/servconf"
-	dbPostgres "loginform/db/postgres"
-	"loginform/routes"
+	"technovizov/config"
+	server "technovizov/config/getconfs/servconf"
+	dbPostgres "technovizov/db/postgres"
+	"technovizov/routes"
 
 	"fmt"
 

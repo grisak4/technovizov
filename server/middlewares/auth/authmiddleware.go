@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"loginform/config/getconfs/jwtsec"
-	jwtutils "loginform/utils/jwt"
 	"net/http"
+	"technovizov/config/getconfs/jwtsec"
+	jwtutils "technovizov/utils/jwt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"

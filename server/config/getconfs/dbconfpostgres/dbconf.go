@@ -1,7 +1,7 @@
 package getconfs
 
 import (
-	"loginform/config/confmodels"
+	"technovizov/config/confmodels"
 
 	"github.com/spf13/viper"
 )

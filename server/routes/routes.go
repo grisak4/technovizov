@@ -2,13 +2,14 @@ package routes
 
 import (
 	//"loginform/middlewares/auth"
-	"loginform/middlewares/auth"
-	"loginform/middlewares/cors"
+	"technovizov/middlewares/auth"
+	"technovizov/middlewares/cors"
 
 	////
-	"loginform/services/hello"
-	"loginform/services/login"
-	"loginform/services/register"
+	"technovizov/services/hello"
+	"technovizov/services/librarian/readers"
+	"technovizov/services/login"
+	"technovizov/services/register"
 
 	////
 	"github.com/gin-gonic/gin"
@@ -38,8 +39,17 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 	adminRoutes := router.Group("/admin")
 	adminRoutes.Use(auth.AuthMiddleware([]string{"admin"}))
 	{
+		//get
 		adminRoutes.GET("/hello", func(c *gin.Context) {
 			hello.GetHelloAdmin(c)
+		})
+		adminRoutes.GET("/getreaders", func(c *gin.Context) {
+			readers.GetAllReaders(c, db)
+		})
+
+		//post
+		adminRoutes.POST("/addreader", func(c *gin.Context) {
+			readers.PostReaders(c, db)
 		})
 	}
 }

@@ -1,7 +1,7 @@
 package jwt
 
 import (
-	"loginform/config/getconfs/jwtsec"
+	"technovizov/config/getconfs/jwtsec"
 	"time"
 
 	"github.com/golang-jwt/jwt"
