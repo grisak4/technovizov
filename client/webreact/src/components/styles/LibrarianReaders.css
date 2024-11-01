@@ -1,0 +1,195 @@
+/* Стили для страницы LibrarianReaders */
+.librarian-readers-container {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Общий стиль для заголовков */
+.readers-title {
+    color: #333;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 24px;
+}
+
+/* Секция добавления читателя */
+.add-reader-section {
+    padding: 20px;
+    background-color: #fff;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Форма добавления читателя */
+.form-add-reader {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.label {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 16px;
+}
+
+.input-text,
+.input-date {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Кнопка для добавления читателя */
+.button-submit-reader {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.button-submit-reader:hover {
+    background-color: #555;
+}
+
+/* Таблица читателей */
+.table-readers {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.table-readers th,
+.table-readers td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.table-readers th {
+    background-color: #333;
+    color: #fff;
+}
+
+.table-readers tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Кнопки действий для читателей */
+.button-edit-reader,
+.button-delete-reader {
+    padding: 8px 12px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.button-edit-reader {
+    background-color: #4CAF50; /* Зеленый для редактирования */
+}
+
+.button-delete-reader {
+    background-color: #f44336; /* Красный для удаления */
+}
+
+.button-edit-reader:hover,
+.button-delete-reader:hover {
+    opacity: 0.8;
+}
+
+/* Секция добавления нового читателя */
+.new-reader-section {
+    padding: 20px;
+    background-color: #fff;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовок секции */
+.new-reader-title {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Форма добавления читателя */
+.new-reader-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Метки для полей ввода */
+.new-reader-label {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 16px;
+}
+
+/* Поля ввода */
+.new-reader-input {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Кнопка для добавления читателя */
+.new-reader-button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.new-reader-button:hover {
+    background-color: #555;
+}
+
+.new-reader-section {
+    margin-top: 20px;
+}
+
+.new-reader-label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.new-reader-input {
+    margin-bottom: 15px;
+    padding: 8px;
+    width: 100%;
+}
+
+.new-reader-button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 20px;
+}

@@ -4,6 +4,7 @@ import Home from './components/Home';
 import PrivateRoute from './components/PrivateRoute';
 import AuthRedirect from './components/AuthRedirect';
 import LibrarianBooks from './components/librarian/LibrarianBooks';
+import LibrarianReaders from './components/librarian/LibrarianReaders';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
 
         <Route path="/librarian" element={<PrivateRoute allowedRoles={['librarian']} />}>
           <Route path="/librarian/books" element={<LibrarianBooks />} />
+          <Route path="/librarian/readers" element={<LibrarianReaders />} />
         </Route>
 
         <Route path="/user" element={<PrivateRoute allowedRoles={['reader', 'librarian']} />}>

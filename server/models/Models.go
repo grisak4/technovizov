@@ -17,13 +17,13 @@ type User struct {
 type Reader struct {
 	ID          uint      `gorm:"primaryKey"`
 	UserID      uint      `gorm:"uniqueIndex"`
-	LibraryCard string    `json:"library_card"`
-	Surname     string    `json:"sur_name"`
-	FirstName   string    `json:"first_name"`
-	Patronymic  string    `json:"patronymic"`
-	Address     string    `json:"address"`
-	Phone       string    `json:"phone"`
-	DateEntry   time.Time `json:"data_entry"`
+	LibraryCard string    `gorm:"not null" json:"library_card"`
+	Surname     string    `gorm:"not null" json:"sur_name"`
+	FirstName   string    `gorm:"not null" json:"first_name"`
+	Patronymic  string    `gorm:"not null" json:"patronymic"`
+	Address     string    `gorm:"not null" json:"address"`
+	Phone       string    `gorm:"not null" json:"phone"`
+	DateEntry   time.Time `gorm:"not null" json:"data_entry"`
 
 	IssueBooks []IssueBooks `gorm:"foreignKey:ReaderID"` // один ко многим d
 }

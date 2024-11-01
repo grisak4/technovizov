@@ -15,6 +15,7 @@ function LibrarianNav() {
             <h1 className="librarian-nav-title">Библиотекарь</h1>
             <nav className="librarian-nav-links">
                 <Link to="/librarian/books" className="librarian-nav-link">Книги</Link>
+                <Link to="/librarian/readers" className="librarian-nav-link">Читатели</Link>
                 <button onClick={handleLogout} className="librarian-nav-button">Logout</button>
             </nav>
         </header>
