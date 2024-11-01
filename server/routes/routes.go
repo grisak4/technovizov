@@ -8,6 +8,9 @@ import (
 	////
 	"technovizov/services/auth/login"
 	"technovizov/services/hello"
+
+	//// librarian
+	"technovizov/services/librarian/books"
 	"technovizov/services/librarian/readers"
 
 	////
@@ -43,14 +46,35 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 			readers.GetAllReaders(c, db)
 		})
 
+		adminRoutes.GET("/getbooks", func(c *gin.Context) {
+			books.GetAllBooks(c, db)
+		})
+		adminRoutes.GET("/getbooksgenre/:genre", func(c *gin.Context) {
+			books.GetBooksByGenre(c, db)
+		})
+
 		// post
 		adminRoutes.POST("/addreader", func(c *gin.Context) {
 			readers.PostCreateReader(c, db)
+		})
+		adminRoutes.POST("/addbook", func(c *gin.Context) {
+			books.PostCreateBook(c, db)
 		})
 
 		// patch
 		adminRoutes.PATCH("/changereader/:id", func(c *gin.Context) {
 			readers.PatchEditReader(c, db)
+		})
+		adminRoutes.PATCH("/changebook/:id", func(c *gin.Context) {
+			books.PatchEditBook(c, db)
+		})
+
+		// delete
+		adminRoutes.DELETE("/deletereader/:id", func(c *gin.Context) {
+			readers.DeleteReader(c, db)
+		})
+		adminRoutes.DELETE("/deletebook/:id", func(c *gin.Context) {
+			books.DeleteBook(c, db)
 		})
 	}
 }

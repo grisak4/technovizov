@@ -6,8 +6,8 @@ import (
 
 type User struct {
 	ID       uint   `gorm:"primaryKey"`
-	Login    string `gorm:"unique" json:"login"`
-	Password string `json:"password"`
+	Login    string `gorm:"unique;not null" json:"login"`
+	Password string `gorm:"unique;not null" json:"password"`
 	Role     string `json:"role"`
 
 	Librarian *Librarian `gorm:"constraint:OnDelete:CASCADE;"`
@@ -40,7 +40,7 @@ type Librarian struct {
 
 type Book struct {
 	ID     uint   `gorm:"primaryKey"`
-	Title  string `json:"title"`
+	Title  string `gorm:"unique" json:"title"`
 	Author string `json:"author"`
 	Genre  string `json:"genre"`
 	Count  int    `json:"count"`
