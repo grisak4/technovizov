@@ -62,11 +62,11 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 		})
 
 		// patch
-		adminRoutes.PATCH("/changereader/:id", func(c *gin.Context) {
-			readers.PatchEditReader(c, db)
+		adminRoutes.PUT("/changereader/:id", func(c *gin.Context) {
+			readers.PutEditReader(c, db)
 		})
-		adminRoutes.PATCH("/changebook/:id", func(c *gin.Context) {
-			books.PatchEditBook(c, db)
+		adminRoutes.PUT("/changebook/:id", func(c *gin.Context) {
+			books.PutEditBook(c, db)
 		})
 
 		// delete

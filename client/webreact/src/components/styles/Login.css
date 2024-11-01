@@ -1,71 +1,98 @@
+/* Фон для формы входа */
 .login-body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: #2b2b2b;
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
 
+/* Контейнер формы */
 .login-container {
-    background: #c6ced1;
+    width: 400px;
+    padding: 2rem;
+    background-color: #333;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    text-align: center; /* Центрирование содержимого */
+}
 
+/* Заголовок формы */
+.login-form-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+/* Общие стили для полей ввода */
+.login-form-input {
+    margin-bottom: 1.2rem;
     display: flex;
     justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
-    padding: 30px;
-    width: 300px;
-
-    border-radius: 20px;
 }
 
-/* loginform */
-
-.login-form-header {
-    font-size: 28px;
+.login-form-input input[type="text"],
+.login-form-input input[type="password"] {
+    width: 80%; /* Задаём ширину для центрирования */
+    padding: 0.8rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #444;
+    border: 1px solid #555;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
 }
 
-.login-form-input {
-    margin: 20px 0px 20px 0px;
+.login-form-input input[type="text"]:focus,
+.login-form-input input[type="password"]:focus {
+    border-color: #007acc;
 }
 
-.login-form-input input {
-    all: unset;
-    cursor: pointer;
-    padding: 10px;
-}
-
-.login-form-input-login input {
-    border: 0;
-    text-decoration: none;
-    border-bottom: 1px #3f505a solid;
-}
-
-.login-form-input-password input {
-    border: 0;
-    text-decoration: none;
-    border-bottom: 1px #3f505a solid;
-}
-
+/* Кнопка "Войти" */
 .login-form-input-submit {
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
-.login-form-input-submit input {
+.login-form-input-submit input[type="submit"] {
+    width: 40%; /* Центрирование и ширина кнопки */
+    padding: 0.8rem;
+    font-size: 1rem;
     color: #fff;
-    border: 1px solid #3f505a;
-    text-decoration: none;
-    background: #3f505a;
-    padding: 15px;
-    width: 150px;
-    transition: 0.5s;
+    background-color: #007acc;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.login-form-input-submit:hover input {
-    color: #09d438;
-    width: 170px;
+.login-form-input-submit input[type="submit"]:hover {
+    background-color: #005f99;
 }
 
-/* loginform */
+/* Стиль для сообщения об ошибке */
+.login-error {
+    color: #f44336;
+    background-color: #333;
+    border: 1px solid #f44336;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* Адаптивные стили для меньших экранов */
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        padding: 1.5rem;
+    }
+
+    .login-form-header {
+        font-size: 1.25rem;
+    }
+}

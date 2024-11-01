@@ -1,5 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import '../styles/LibrarianNav.css';
 
 function LibrarianNav() {
     const navigate = useNavigate();
@@ -10,10 +11,13 @@ function LibrarianNav() {
     };
 
     return (
-        <div>
-            <h1>Hello admin!</h1>
-            <button onClick={handleLogout}>Logout</button>
-        </div>
+        <header className="librarian-nav">
+            <h1 className="librarian-nav-title">Библиотекарь</h1>
+            <nav className="librarian-nav-links">
+                <Link to="/librarian/books" className="librarian-nav-link">Книги</Link>
+                <button onClick={handleLogout} className="librarian-nav-button">Logout</button>
+            </nav>
+        </header>
     );
 }
 

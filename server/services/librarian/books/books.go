@@ -35,7 +35,7 @@ func DeleteBook(c *gin.Context, db *gorm.DB) {
 	})
 }
 
-func PatchEditBook(c *gin.Context, db *gorm.DB) {
+func PutEditBook(c *gin.Context, db *gorm.DB) {
 	var book models.Book
 
 	id := c.Param("id")

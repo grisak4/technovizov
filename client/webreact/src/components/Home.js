@@ -1,18 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import LibrarianNav from "./librarian/LibrarianNav";
 
 function Home() {
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
-    };
-
     return (
         <div>
-            <h1>Hello world!</h1>
-            <button onClick={handleLogout}>Logout</button>
+            <LibrarianNav />
+            <div>
+                <h1>HELLo</h1>
+            </div>
         </div>
     );
 }

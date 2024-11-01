@@ -37,7 +37,7 @@ func DeleteReader(c *gin.Context, db *gorm.DB) {
 	})
 }
 
-func PatchEditReader(c *gin.Context, db *gorm.DB) {
+func PutEditReader(c *gin.Context, db *gorm.DB) {
 	var reader models.Reader
 
 	id := c.Param("id")

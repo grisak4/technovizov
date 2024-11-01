@@ -39,11 +39,11 @@ type Librarian struct {
 }
 
 type Book struct {
-	ID     uint   `gorm:"primaryKey"`
-	Title  string `gorm:"unique" json:"title"`
-	Author string `json:"author"`
-	Genre  string `json:"genre"`
-	Count  int    `json:"count"`
+	ID     uint   `gorm:"primaryKey" json:"id"`
+	Title  string `gorm:"not null;unique" json:"title"`
+	Author string `gorm:"not null" json:"author"`
+	Genre  string `gorm:"not null" json:"genre"`
+	Count  int    `gorm:"not null" json:"count"`
 
 	IssueBooks []IssueBooks `gorm:"foreignKey:BookID"` // один ко многим
 }

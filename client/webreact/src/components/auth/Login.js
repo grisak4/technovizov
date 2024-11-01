@@ -5,6 +5,7 @@ import '../styles/Login.css';
 const Login = () => {
     const [login, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState(''); // Новое состояние для сообщения об ошибке
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -23,13 +24,12 @@ const Login = () => {
 
             if (response.ok) {
                 localStorage.setItem('token', data.token);
-
-                navigate('/librarian/home');
+                navigate('/librarian/books');
             } else {
-                console.log('Ошибка входа:', data.message || 'Произошла ошибка');
+                setErrorMessage(data.message || 'Неверный логин или пароль'); // Устанавливаем сообщение об ошибке
             }
         } catch (error) {
-            console.error('Ошибка:', error);
+            setErrorMessage('Ошибка подключения к серверу');
         }
     };
 
@@ -39,6 +39,8 @@ const Login = () => {
                 <div className='login-form-header'>
                     Вход в аккаунт
                 </div>
+                {/* Блок для отображения сообщения об ошибке */}
+                {errorMessage && <div className='login-error'>{errorMessage}</div>}
                 <form onSubmit={handleSubmit}>
                     <div className='login-form-input'>
                         <div className='login-form-input-login'>

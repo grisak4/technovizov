@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/styleviewing.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Библиотека</h1>
+    <div class="genre-filter">
+      <label for="genre">Выберите жанр:</label>
+      <select id="genre" onchange="filterBooksByGenre()">
+        <option value="all">Все жанры</option>
+        <option value="fiction">Художественная литература</option>
+        <option value="non-fiction">Нон-фикшн</option>
+        <option value="science">Научная литература</option>
+      </select>
+    </div>
+    <table class="book-table">
+      <thead>
+        <tr>
+          <th>Выбрать</th>
+          <th>Название</th>
+          <th>Автор</th>
+          <th>Жанр</th>
+        </tr>
+      </thead>
+      <tbody id="book-list">
+        <tr data-genre="fiction">
+          <td><input type="checkbox" class="select-book" data-title="Название книги 1" onchange="toggleSelection(this)"></td>
+          <td>Название книги 1</td>
+          <td>Автор 1</td>
+          <td>Художественная литература</td>
+        </tr>
+        <tr data-genre="non-fiction">
+          <td><input type="checkbox" class="select-book" data-title="Название книги 2" onchange="toggleSelection(this)"></td>
+          <td>Название книги 2</td>
+          <td>Автор 2</td>
+          <td>Нон-фикшн</td>
+        </tr>
+        <tr data-genre="science">
+          <td><input type="checkbox" class="select-book" data-title="Название книги 3" onchange="toggleSelection(this)"></td>
+          <td>Название книги 3</td>
+          <td>Автор 3</td>
+          <td>Научная литература</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
