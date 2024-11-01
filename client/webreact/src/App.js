@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/auth/Login';
-import Register from './components/auth/Regin';
 import Home from './components/Home';
 import PrivateRoute from './components/PrivateRoute';
 import AuthRedirect from './components/AuthRedirect';
+import Librarian from './components/librarian/LibrarianNav'
 
 function App() {
   return (
@@ -11,10 +11,13 @@ function App() {
       <Routes>
         <Route path='/' element={<AuthRedirect />}/>
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
 
-        <Route element={<PrivateRoute />}>
-          <Route path="/main" element={<Home />} />
+        <Route path="/librarian" element={<PrivateRoute allowedRoles={['librarian']} />}>
+          <Route path="/librarian/home" element={<Librarian />} />
+        </Route>
+
+        <Route path="/user" element={<PrivateRoute allowedRoles={['reader', 'librarian']} />}>
+          <Route path="/user/profile" element={<Home />} />
         </Route>
 
         <Route path="*" element={<h1>404 - Страница не найдена</h1>} />
