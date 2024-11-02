@@ -1,8 +1,10 @@
 import React from "react";
+import LibrarianNav from "./LibrarianNav";
 
-function Home() {
+function LibrarianIssues() {
     return (
         <div>
+            <LibrarianNav />
             <div>
                 <h1>HELLo</h1>
             </div>
@@ -10,4 +12,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default LibrarianIssues;

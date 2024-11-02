@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import '../styles/Login.css';
 
 const Login = () => {
@@ -19,18 +20,31 @@ const Login = () => {
                 },
                 body: JSON.stringify({ login, password }),
             });
-
+        
             const data = await response.json();
-
+        
             if (response.ok) {
                 localStorage.setItem('token', data.token);
-                navigate('/librarian/books');
+        
+                // Декодируем токен для извлечения роли пользователя
+                const decoded = jwtDecode(data.token);
+                const userRole = decoded.role;
+        
+                // Определяем маршрут в зависимости от роли
+                let redirectPath = '/';
+                if (userRole === 'librarian') {
+                    redirectPath = '/librarian/books';
+                } else if (userRole === 'reader') {
+                    redirectPath = '/reader/books';
+                }
+        
+                navigate(redirectPath);
             } else {
-                setErrorMessage(data.message || 'Неверный логин или пароль'); // Устанавливаем сообщение об ошибке
+                setErrorMessage(data.message || 'Неверный логин или пароль');
             }
         } catch (error) {
             setErrorMessage('Ошибка подключения к серверу');
-        }
+        }        
     };
 
     return (

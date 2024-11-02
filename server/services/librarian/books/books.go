@@ -81,9 +81,9 @@ func PostCreateBook(c *gin.Context, db *gorm.DB) {
 
 	if err := db.Create(&newBook).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "invalid request",
+			"error": err.Error(),
 		})
-		log.Printf("Error with read user's data: %s\n", err)
+		log.Printf("Error with database: %s\n", err)
 		return
 	}
 

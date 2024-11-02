@@ -43,7 +43,7 @@ func PostLoginUser(c *gin.Context, db *gorm.DB) {
 		log.Printf("Error with generate jwt: %s\n", err)
 		return
 	}
-	log.Println("jwttoken: ", jwtToken)
+
 	c.JSON(http.StatusOK, gin.H{
 		"token": jwtToken,
 	})

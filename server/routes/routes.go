@@ -7,9 +7,12 @@ import (
 
 	////
 	"technovizov/services/auth/login"
-	"technovizov/services/hello"
+
+	//// reader
+	"technovizov/services/reader"
 
 	//// librarian
+	"technovizov/services/librarian/authors"
 	"technovizov/services/librarian/books"
 	"technovizov/services/librarian/readers"
 
@@ -30,8 +33,27 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 	userRoutes := router.Group("/reader")
 	userRoutes.Use(auth.AuthMiddleware([]string{"reader"}))
 	{
-		userRoutes.GET("/hello", func(c *gin.Context) {
-			hello.GetHelloUser(c)
+		// get
+		userRoutes.GET("/getbooks", func(c *gin.Context) {
+			books.GetAllBooks(c, db)
+		})
+		userRoutes.GET("/getbooksgenre/:genre", func(c *gin.Context) {
+			books.GetBooksByGenre(c, db)
+		})
+		userRoutes.GET("/getauthors", func(c *gin.Context) {
+			authors.GetAllAuthors(c, db)
+		})
+
+		userRoutes.GET("/getfavorites/:reader_id", func(c *gin.Context) {
+			reader.GetAllFavoriteBooks(c, db)
+		})
+		userRoutes.GET("/gethistory/:reader_id", func(c *gin.Context) {
+			reader.GetAllHistoryBooks(c, db)
+		})
+
+		// post
+		userRoutes.POST("/addfavorite", func(c *gin.Context) {
+			reader.PostAddFavorite(c, db)
 		})
 	}
 
@@ -39,9 +61,6 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 	adminRoutes.Use(auth.AuthMiddleware([]string{"librarian"}))
 	{
 		// get
-		adminRoutes.GET("/hello", func(c *gin.Context) {
-			hello.GetHelloAdmin(c)
-		})
 		adminRoutes.GET("/getreaders", func(c *gin.Context) {
 			readers.GetAllReaders(c, db)
 		})
@@ -53,6 +72,10 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 			books.GetBooksByGenre(c, db)
 		})
 
+		adminRoutes.GET("/getauthors", func(c *gin.Context) {
+			authors.GetAllAuthors(c, db)
+		})
+
 		// post
 		adminRoutes.POST("/addreader", func(c *gin.Context) {
 			readers.PostCreateReader(c, db)
@@ -60,13 +83,19 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 		adminRoutes.POST("/addbook", func(c *gin.Context) {
 			books.PostCreateBook(c, db)
 		})
+		adminRoutes.POST("/addauthor", func(c *gin.Context) {
+			authors.PostCreateAuthor(c, db)
+		})
 
-		// patch
+		// put
 		adminRoutes.PUT("/changereader/:id", func(c *gin.Context) {
 			readers.PutEditReader(c, db)
 		})
 		adminRoutes.PUT("/changebook/:id", func(c *gin.Context) {
 			books.PutEditBook(c, db)
+		})
+		adminRoutes.PUT("/changeauthore/:id", func(c *gin.Context) {
+			authors.PutEditAuthor(c, db)
 		})
 
 		// delete
@@ -75,6 +104,9 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 		})
 		adminRoutes.DELETE("/deletebook/:id", func(c *gin.Context) {
 			books.DeleteBook(c, db)
+		})
+		adminRoutes.DELETE("/deleteauthor/:id", func(c *gin.Context) {
+			authors.DeleteAuthor(c, db)
 		})
 	}
 }

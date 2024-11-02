@@ -1,0 +1,35 @@
+.books-list {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 15px; /* Отступ между книгами */
+}
+
+.book-item {
+    border: 1px solid #ccc; /* Обводка вокруг книги */
+    border-radius: 8px; /* Скругление углов */
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень для эффекта глубины */
+    background-color: #f9f9f9; /* Цвет фона для книги */
+    transition: transform 0.2s; /* Анимация при наведении */
+}
+
+.book-item:hover {
+    transform: scale(1.02); /* Увеличение при наведении */
+}
+
+.book-item h2 {
+    font-size: 1.5rem; /* Размер заголовка книги */
+    margin-bottom: 10px; /* Отступ снизу */
+}
+
+.book-item p {
+    margin: 5px 0; /* Отступ сверху и снизу для параграфов */
+    font-size: 1rem; /* Размер текста */
+}
+
+.error-message {
+    color: red; /* Цвет сообщения об ошибке */
+    margin: 10px 0; /* Отступ для сообщения об ошибке */
+    font-weight: bold; /* Жирный шрифт */
+}

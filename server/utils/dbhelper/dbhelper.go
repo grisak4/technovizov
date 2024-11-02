@@ -14,7 +14,7 @@ func AddUserId(db *gorm.DB, user *models.User, newReader *models.Reader) error {
 			UserID:      user.ID,
 			Surname:     newReader.Surname,
 			FirstName:   newReader.FirstName,
-			Patronymic:  newReader.Address,
+			Patronymic:  newReader.Patronymic,
 			Address:     newReader.Address,
 			Phone:       newReader.Phone,
 			DateEntry:   newReader.DateEntry,

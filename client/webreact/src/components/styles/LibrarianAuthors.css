@@ -1,0 +1,133 @@
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.authors-section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.table-authors {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-authors th, .table-authors td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table-authors th {
+    background-color: #f2f2f2;
+}
+
+.edit-author-input {
+    width: 70%;
+    padding: 5px;
+}
+
+.edit-button, .delete-button, .save-button, .cancel-button, .add-author-button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.delete-button {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+.save-button {
+    background-color: #2196F3; /* Blue */
+    color: white;
+}
+
+.cancel-button {
+    background-color: #9E9E9E; /* Gray */
+    color: white;
+}
+
+.new-author-section {
+    margin-top: 20px;
+}
+
+.new-author-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.new-author-label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.new-author-input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.add-author-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    cursor: pointer;
+}
+
+.new-author-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff; /* White background for the form section */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.new-author-title {
+    font-size: 24px; /* Title size */
+    margin-bottom: 15px; /* Space below the title */
+    color: #333; /* Dark text color */
+}
+
+.new-author-form {
+    display: flex;
+    flex-direction: column; /* Stack inputs vertically */
+}
+
+.new-author-label {
+    font-size: 16px; /* Label size */
+    margin-bottom: 10px; /* Space below the label */
+    color: #555; /* Slightly lighter text color */
+}
+
+.new-author-input {
+    padding: 10px; /* Padding for the input */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 4px; /* Rounded corners for input */
+    font-size: 16px; /* Input text size */
+    margin-bottom: 20px; /* Space below the input */
+}
+
+.add-author-button {
+    padding: 10px 15px; /* Button padding */
+    background-color: #333; /* Bootstrap primary color */
+    color: white; /* White text color */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners for button */
+    font-size: 16px; /* Button text size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.add-author-button:hover {
+    background-color: #555; /* Darker blue on hover */
+}

@@ -11,7 +11,7 @@ function LibrarianReaders() {
         patronymic: '',
         address: '',
         phone: '',
-        data_entry: '',
+        data_entry: new Date().toISOString().split('T')[0], // Устанавливаем текущее значение даты
     });
     const [editReader, setEditReader] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
@@ -28,12 +28,12 @@ function LibrarianReaders() {
                     'Authorization': `${token}`,
                 },
             });
-    
+
             if (!response.ok) {
                 throw new Error('Ошибка при получении читателей');
             }
             const data = await response.json();
-            console.log("Fetched readers:", data); // Log the data here
+            console.log("Fetched readers:", data);
             setReaders(data);
         } catch (error) {
             setErrorMessage(error.message);
@@ -42,17 +42,17 @@ function LibrarianReaders() {
 
     const handleAddReader = async (e) => {
         e.preventDefault();
-        // Prevent submitting empty data
         if (!newReader.sur_name || !newReader.first_name || !newReader.phone || !newReader.data_entry) {
             setErrorMessage('Пожалуйста, заполните все обязательные поля.');
             return;
         }
     
+        // Преобразование data_entry в нужный формат
+        const formattedDateEntry = new Date(newReader.data_entry).toISOString();
+    
         try {
             const token = localStorage.getItem('token');
-            // Create a new date object and format it to the expected ISO format
-            const formattedDataEntry = new Date(newReader.data_entry).toISOString();
-            
+    
             const response = await fetch('http://localhost:8080/librarian/addreader', {
                 method: 'POST',
                 headers: {
@@ -61,7 +61,7 @@ function LibrarianReaders() {
                 },
                 body: JSON.stringify({
                     ...newReader,
-                    data_entry: formattedDataEntry, // Use the formatted date
+                    data_entry: formattedDateEntry, // Используем преобразованную дату
                 }),
             });
     
@@ -75,10 +75,22 @@ function LibrarianReaders() {
         } catch (error) {
             setErrorMessage(error.message);
         }
+        console.log('Sending data to server:', JSON.stringify({
+            ...newReader,
+            data_entry: formattedDateEntry,
+        }));
+        
     };
+    
 
     const handleDeleteReader = async (id) => {
-        console.log("Deleting reader with ID:", id); // Debugging line
+        console.log("Deleting reader with ID:", id);
+        if (!id) {
+            console.error("Cannot delete reader, ID is undefined.");
+            setErrorMessage('Ошибка: ID читателя не определён.');
+            return;
+        }
+
         try {
             const token = localStorage.getItem('token');
             const response = await fetch(`http://localhost:8080/librarian/deletereader/${id}`, {
@@ -87,11 +99,11 @@ function LibrarianReaders() {
                     'Authorization': `${token}`,
                 },
             });
-    
+
             if (!response.ok) {
                 throw new Error('Ошибка при удалении читателя');
             }
-    
+
             fetchReaders();
         } catch (error) {
             setErrorMessage(error.message);
@@ -99,11 +111,10 @@ function LibrarianReaders() {
     };
 
     const handleEditReader = (reader) => {
-        setEditReader({ ...reader }); // Fill in the edit form with the reader's data
+        setEditReader({ ...reader, data_entry: reader.data_entry || '' });
     };
 
     const handleSaveChanges = async () => {
-        // Prevent saving if required fields are empty
         if (!editReader.sur_name || !editReader.first_name || !editReader.phone || !editReader.data_entry) {
             setErrorMessage('Пожалуйста, заполните все обязательные поля для редактирования.');
             return;
@@ -111,13 +122,13 @@ function LibrarianReaders() {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:8080/librarian/changereader/${editReader.ID}`, { // Use editReader.ID
+            const response = await fetch(`http://localhost:8080/librarian/changereader/${editReader.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `${token}`,
                 },
-                body: JSON.stringify(editReader),
+                body: JSON.stringify(editReader), // Отправляем обновленные данные читателя
             });
 
             if (!response.ok) {
@@ -125,11 +136,12 @@ function LibrarianReaders() {
             }
 
             fetchReaders();
-            setEditReader(null); // Close edit form
+            setEditReader(null);
             setErrorMessage('');
         } catch (error) {
             setErrorMessage(error.message);
         }
+        
     };
 
     return (
@@ -155,8 +167,8 @@ function LibrarianReaders() {
                         </thead>
                         <tbody>
                             {readers.map((reader) => (
-                                <tr key={reader.ID}> {/* Change to reader.ID */}
-                                    {editReader && editReader.ID === reader.ID ? ( // Change here too
+                                <tr key={reader.id}>
+                                    {editReader && editReader.id === reader.id ? (
                                         <>
                                             <td>
                                                 <input
@@ -203,8 +215,8 @@ function LibrarianReaders() {
                                             <td>
                                                 <input
                                                     type="date"
-                                                    value={editReader.data_entry.split('T')[0]} // Convert to YYYY-MM-DD format
-                                                    onChange={(e) => setEditReader({ ...editReader, data_entry: e.target.value })}
+                                                    value={editReader.data_entry ? editReader.data_entry.split('T')[0] : ''}
+                                                    onChange={(e) => setEditReader({ ...editReader, data_entry: e.target.value })} // Установите значение как дату в формате YYYY-MM-DD
                                                 />
                                             </td>
                                             <td>
@@ -220,10 +232,10 @@ function LibrarianReaders() {
                                             <td>{reader.patronymic}</td>
                                             <td>{reader.address}</td>
                                             <td>{reader.phone}</td>
-                                            <td>{new Date(reader.data_entry).toLocaleDateString('ru-RU')}</td> {/* Format date */}
+                                            <td>{new Date(reader.data_entry).toLocaleDateString('ru-RU')}</td>
                                             <td>
                                                 <button onClick={() => handleEditReader(reader)}>Изменить</button>
-                                                <button onClick={() => handleDeleteReader(reader.ID)}>Удалить</button> {/* Change to reader.ID */}
+                                                <button onClick={() => handleDeleteReader(reader.id)}>Удалить</button>
                                             </td>
                                         </>
                                     )}
@@ -281,7 +293,7 @@ function LibrarianReaders() {
                         </label>
                         <label className="new-reader-label">Телефон:
                             <input
-                                type="tel"
+                                type="text"
                                 required
                                 value={newReader.phone}
                                 onChange={(e) => setNewReader({ ...newReader, phone: e.target.value })}
@@ -289,15 +301,17 @@ function LibrarianReaders() {
                             />
                         </label>
                         <label className="new-reader-label">Дата записи:
-                            <input
-                                type="date"
-                                required
-                                value={newReader.data_entry}
-                                onChange={(e) => setNewReader({ ...newReader, data_entry: e.target.value })}
-                                className="new-reader-input"
-                            />
-                        </label>
-                        <button type="submit" className="add-reader-button">Добавить читателя</button>
+                        <input
+    type="date"
+    required
+    value={newReader.data_entry ? newReader.data_entry.split('T')[0] : ''}
+    onChange={(e) => setNewReader({ ...newReader, data_entry: e.target.value ? e.target.value + 'T00:00:00Z' : '' })}
+    className="new-reader-input"
+/>
+
+</label>
+
+                        <button type="submit" className="submit-button">Добавить читателя</button>
                     </form>
                 </section>
             </div>

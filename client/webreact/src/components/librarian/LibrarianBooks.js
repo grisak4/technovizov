@@ -4,14 +4,14 @@ import LibrarianNav from "./LibrarianNav";
 
 function LibrarianBooks() {
     const [books, setBooks] = useState([]);
+    const [authors, setAuthors] = useState([]);
     const [newBook, setNewBook] = useState({
         title: '',
         author: '',
         genre: '',
-        year: '',
         count: 0,
     });
-    const [editBook, setEditBook] = useState(null); // Состояние для редактирования
+    const [editBook, setEditBook] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
 
     const genres = [
@@ -27,6 +27,7 @@ function LibrarianBooks() {
 
     useEffect(() => {
         fetchBooks();
+        fetchAuthors();
     }, []);
 
     const fetchBooks = async () => {
@@ -48,6 +49,25 @@ function LibrarianBooks() {
         }
     };
 
+    const fetchAuthors = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch('http://localhost:8080/librarian/getauthors', {
+                headers: {
+                    'Authorization': `${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при получении авторов');
+            }
+            const data = await response.json();
+            setAuthors(data);
+        } catch (error) {
+            setErrorMessage(error.message);
+        }
+    };
+
     const handleAddBook = async (e) => {
         e.preventDefault();
         try {
@@ -59,7 +79,9 @@ function LibrarianBooks() {
                     'Authorization': `${token}`,
                 },
                 body: JSON.stringify({
-                    ...newBook,
+                    title: newBook.title,
+                    author_id: parseInt(newBook.author, 10), // Используем author_id
+                    genre: newBook.genre,
                     count: parseInt(newBook.count, 10),
                 }),
             });
@@ -69,7 +91,7 @@ function LibrarianBooks() {
             }
 
             fetchBooks();
-            setNewBook({ title: '', author: '', genre: '', year: '', count: 0 });
+            setNewBook({ title: '', author: '', genre: '', count: 0 });
         } catch (error) {
             setErrorMessage(error.message);
         }
@@ -96,10 +118,17 @@ function LibrarianBooks() {
     };
 
     const handleEditBook = (book) => {
-        setEditBook(book); // Заполняем данные редактируемой книги
+        setEditBook(book);
+        setNewBook({
+            title: book.title,
+            author: book.author_id, // Используем author_id для редактирования
+            genre: book.genre,
+            count: book.count,
+        });
     };
 
-    const handleSaveChanges = async () => {
+    const handleSaveChanges = async (e) => {
+        e.preventDefault();
         try {
             const token = localStorage.getItem('token');
             const response = await fetch(`http://localhost:8080/librarian/changebook/${editBook.id}`, {
@@ -109,8 +138,10 @@ function LibrarianBooks() {
                     'Authorization': `${token}`,
                 },
                 body: JSON.stringify({
-                    ...editBook,
-                    count: parseInt(editBook.count, 10),
+                    title: newBook.title,
+                    author_id: parseInt(newBook.author, 10),
+                    genre: newBook.genre,
+                    count: parseInt(newBook.count, 10),
                 }),
             });
 
@@ -119,7 +150,8 @@ function LibrarianBooks() {
             }
 
             fetchBooks();
-            setEditBook(null); // Закрываем форму редактирования
+            setEditBook(null);
+            setNewBook({ title: '', author: '', genre: '', count: 0 });
         } catch (error) {
             setErrorMessage(error.message);
         }
@@ -142,66 +174,28 @@ function LibrarianBooks() {
                         </tr>
                     </thead>
                     <tbody>
-                        {books.map((book) => (
-                            <tr key={book.id}>
-                                {editBook && editBook.id === book.id ? (
-                                    <>
-                                        <td>
-                                            <input
-                                                type="text"
-                                                value={editBook.title}
-                                                onChange={(e) => setEditBook({ ...editBook, title: e.target.value })}
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                type="text"
-                                                value={editBook.author}
-                                                onChange={(e) => setEditBook({ ...editBook, author: e.target.value })}
-                                            />
-                                        </td>
-                                        <td>
-                                            <select
-                                                value={editBook.genre}
-                                                onChange={(e) => setEditBook({ ...editBook, genre: e.target.value })}
-                                            >
-                                                {genres.map((genre) => (
-                                                    <option key={genre} value={genre}>{genre}</option>
-                                                ))}
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                value={editBook.count}
-                                                onChange={(e) => setEditBook({ ...editBook, count: e.target.value })}
-                                            />
-                                        </td>
-                                        <td>
-                                            <button onClick={handleSaveChanges}>Сохранить</button>
-                                            <button onClick={() => setEditBook(null)}>Отмена</button>
-                                        </td>
-                                    </>
-                                ) : (
-                                    <>
-                                        <td>{book.title}</td>
-                                        <td>{book.author}</td>
-                                        <td>{book.genre}</td>
-                                        <td>{book.count}</td>
-                                        <td>
-                                            <button className="button-edit" onClick={() => handleEditBook(book)}>Изменить</button>
-                                            <button className="button-delete" onClick={() => handleDeleteBook(book.id)}>Удалить</button>
-                                        </td>
-                                    </>
-                                )}
-                            </tr>
-                        ))}
+                        {books.map((book) => {
+                            const author = authors.find(author => author.id === book.author_id);
+                            
+                            return (
+                                <tr key={book.id}>
+                                    <td>{book.title}</td>
+                                    <td>{author ? author.pseudonym : "Автор не указан"}</td>
+                                    <td>{book.genre}</td>
+                                    <td>{book.count}</td>
+                                    <td>
+                                        <button className="button-edit" onClick={() => handleEditBook(book)}>Изменить</button>
+                                        <button className="button-delete" onClick={() => handleDeleteBook(book.id)}>Удалить</button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </section>
             <section id="add-book" className="add-book-container">
-                <h2 className="add-book-title">Добавить новую книгу</h2>
-                <form className="add-book-form" onSubmit={handleAddBook}>
+                <h2 className="add-book-title">{editBook ? "Изменить книгу" : "Добавить новую книгу"}</h2>
+                <form className="add-book-form" onSubmit={editBook ? handleSaveChanges : handleAddBook}>
                     <label className="add-book-label">Название книги:
                         <input
                             type="text"
@@ -212,13 +206,17 @@ function LibrarianBooks() {
                         />
                     </label>
                     <label className="add-book-label">Автор:
-                        <input
-                            type="text"
+                        <select
                             required
                             value={newBook.author}
                             onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
-                            className="add-book-input"
-                        />
+                            className="add-book-select"
+                        >
+                            <option value="">Выберите автора</option>
+                            {authors.map((author) => (
+                                <option key={author.id} value={author.id}>{author.pseudonym}</option>
+                            ))}
+                        </select>
                     </label>
                     <label className="add-book-label">Жанр:
                         <select
@@ -227,9 +225,9 @@ function LibrarianBooks() {
                             onChange={(e) => setNewBook({ ...newBook, genre: e.target.value })}
                             className="add-book-select"
                         >
-                        {genres.map((genre) => (
-                            <option key={genre} value={genre}>{genre}</option>
-                        ))}
+                            {genres.map((genre) => (
+                                <option key={genre} value={genre}>{genre}</option>
+                            ))}
                         </select>
                     </label>
                     <label className="add-book-label">Количество:
@@ -241,7 +239,8 @@ function LibrarianBooks() {
                             className="add-book-input"
                         />
                     </label>
-                    <button type="submit" className="add-book-button">Добавить книгу</button>
+                    <button type="submit" className="add-book-button">{editBook ? "Сохранить изменения" : "Добавить книгу"}</button>
+                    {editBook && <button type="button" onClick={() => setEditBook(null)}>Отменить</button>} {/* Кнопка для отмены редактирования */}
                 </form>
             </section>
         </div>

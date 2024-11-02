@@ -8,6 +8,7 @@ const PrivateRoute = ({ allowedRoles }) => {
 
   if (token) {
     const decoded = jwtDecode(token);
+    console.log(decoded);
     userRole = decoded.role;
   }
 
