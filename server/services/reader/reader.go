@@ -88,3 +88,17 @@ func GetAllHistoryBooks(c *gin.Context, db *gorm.DB) {
 
 	c.JSON(http.StatusOK, booksIssues)
 }
+
+func GetAllLibrarians(c *gin.Context, db *gorm.DB) {
+	var librarians []models.Librarian
+
+	if err := db.Find(&librarians).Error; err != nil {
+		log.Printf("Error with database: %s\n", err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "error with database",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, librarians)
+}

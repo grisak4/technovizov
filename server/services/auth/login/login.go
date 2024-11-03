@@ -38,7 +38,7 @@ func PostLoginUser(c *gin.Context, db *gorm.DB) {
 		return
 	}
 
-	jwtToken, err := utilsjwt.GenerateJWT(userForm.Login, userForm.Role)
+	jwtToken, err := utilsjwt.GenerateJWT(userForm.ID, userForm.Login, userForm.Role)
 	if err != nil {
 		log.Printf("Error with generate jwt: %s\n", err)
 		return

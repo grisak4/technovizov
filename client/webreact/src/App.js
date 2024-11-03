@@ -10,6 +10,7 @@ import LibrarianAuthors from './components/librarian/LibrarianAuthors';
 import LibrarianIssues from './components/librarian/LibrarianIssues';
 //
 import ReaderBooks from './components/reader/ReaderBooks';
+import ReaderIssue from './components/reader/ReaderIssue';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
 
         <Route path="/reader" element={<PrivateRoute allowedRoles={['reader']} />}>
           <Route path="books" element={<ReaderBooks />} />
+          <Route path="issue" element={<ReaderIssue />} />
         </Route>
 
         <Route path="*" element={<h1>404 - Страница не найдена</h1>} />

@@ -1,0 +1,69 @@
+.issue-body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Заголовок секции */
+.issue-title {
+    color: #333;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 24px;
+}
+
+/* Секция запроса на выдачу книги */
+.issue-container {
+    padding: 20px;
+    background-color: #fff;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Контейнер для выбора */
+.select-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Отступ между элементами выбора */
+}
+
+/* Метки для полей выбора */
+.select-container label {
+    font-size: 16px;
+    color: #333;
+}
+
+/* Стили для выпадающих списков */
+.select-container select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Кнопка для запроса выдачи */
+.issue-button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.issue-button:hover {
+    background-color: #555;
+}
+
+/* Сообщение об ошибке */
+.error-message {
+    color: #f44336;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+}

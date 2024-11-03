@@ -10,10 +10,12 @@ import (
 
 	//// reader
 	"technovizov/services/reader"
+	"technovizov/services/reader/issuebook"
 
 	//// librarian
 	"technovizov/services/librarian/authors"
 	"technovizov/services/librarian/books"
+	"technovizov/services/librarian/issuebooks"
 	"technovizov/services/librarian/readers"
 
 	////
@@ -43,6 +45,9 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 		userRoutes.GET("/getauthors", func(c *gin.Context) {
 			authors.GetAllAuthors(c, db)
 		})
+		userRoutes.GET("/getlibrarians", func(c *gin.Context) {
+			reader.GetAllLibrarians(c, db)
+		})
 
 		userRoutes.GET("/getfavorites/:reader_id", func(c *gin.Context) {
 			reader.GetAllFavoriteBooks(c, db)
@@ -54,6 +59,10 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 		// post
 		userRoutes.POST("/addfavorite", func(c *gin.Context) {
 			reader.PostAddFavorite(c, db)
+		})
+
+		userRoutes.POST("/issuebook", func(c *gin.Context) {
+			issuebook.PostIssueBook(c, db)
 		})
 	}
 
@@ -76,6 +85,10 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 			authors.GetAllAuthors(c, db)
 		})
 
+		adminRoutes.GET("/getissues", func(c *gin.Context) {
+			issuebooks.GetIssuesBook(c, db)
+		})
+
 		// post
 		adminRoutes.POST("/addreader", func(c *gin.Context) {
 			readers.PostCreateReader(c, db)
@@ -85,6 +98,10 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 		})
 		adminRoutes.POST("/addauthor", func(c *gin.Context) {
 			authors.PostCreateAuthor(c, db)
+		})
+
+		adminRoutes.POST("/issuebooks/:answer", func(c *gin.Context) {
+			issuebooks.PostHandleIssueBook(c, db)
 		})
 
 		// put

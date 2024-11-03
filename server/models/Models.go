@@ -70,13 +70,13 @@ type IssueBooks struct {
 	ReaderID    uint      `gorm:"not null" json:"reader_id"`
 	LibrarianID uint      `gorm:"not null" json:"librarian_id"`
 	BookID      uint      `gorm:"not null" json:"book_id"`
-	Status      string    `gorm:"not null" json:"status"` // accepted or decline
+	Status      string    `gorm:"not null;default:waiting" json:"status"` // returned or given or waiting or decline
 	IssueDate   time.Time `json:"issue_date"`
 	ReturnDate  time.Time `json:"return_date"`
 
-	Reader    Reader    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"reader"`
-	Librarian Librarian `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"librarian"`
-	Book      Book      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"book"`
+	Reader    Reader    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;foreignKey:ReaderID" json:"reader"`
+	Librarian Librarian `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;foreignKey:LibrarianID" json:"librarian"`
+	Book      Book      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;foreignKey:BookID" json:"book"`
 }
 
 // Избранные книги (FavoriteBook) - избранные книги для читателей
