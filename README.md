@@ -61,3 +61,27 @@
 
 ## Login:
 ![alt text](image.png)
+
+## Библеотекарь:
+
+### Книги:
+![alt text](image-1.png)
+
+### Авторы книг:
+![alt text](image-2.png)
+
+### Читатели:
+![alt text](image-3.png)
+
+### Записи:
+![alt text](image-4.png)
+
+
+## Читатель:
+
+### Книги:
+![alt text](image-5.png)
+
+### Запись:
+![alt text](image-6.png)
+
