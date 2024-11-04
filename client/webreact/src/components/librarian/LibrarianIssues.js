@@ -4,17 +4,12 @@ import '../styles/LibrarianIssues.css';
 
 function LibrarianIssues() {
     const [issues, setIssues] = useState([]);
-    const [readers, setReaders] = useState([]);
-    const [books, setBooks] = useState([]);
+    const [readers, setReaders] = useState({});
+    const [books, setBooks] = useState({});
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        const fetchData = async () => {
-            await fetchIssues();
-            await fetchReaders();
-            await fetchBooks();
-        };
-        fetchData();
+        fetchIssues();
     }, []);
 
     const fetchIssues = async () => {
@@ -28,44 +23,44 @@ function LibrarianIssues() {
             if (!response.ok) throw new Error('Ошибка при получении запросов на выдачу книг');
             const data = await response.json();
             console.log("Полученные запросы:", data);
+
             setIssues(data.issues || []);
+            await fetchRelatedData(data.issues || []);
         } catch (error) {
             setMessage(error.message);
         }
     };
 
-    const fetchReaders = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8080/librarian/getreaders', {
-                headers: {
-                    'Authorization': `${token}`,
-                },
-            });
-            if (!response.ok) throw new Error('Ошибка при получении читателей');
-            const data = await response.json();
-            console.log("Полученные читатели:", data);
-            setReaders(data.readers || []);
-        } catch (error) {
-            setMessage(error.message);
-        }
-    };
+    const fetchRelatedData = async (issues) => {
+        const token = localStorage.getItem('token');
+        const readerMap = {};
+        const bookMap = {};
 
-    const fetchBooks = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8080/librarian/getbooks', {
-                headers: {
-                    'Authorization': `${token}`,
-                },
-            });
-            if (!response.ok) throw new Error('Ошибка при получении книг');
-            const data = await response.json();
-            console.log("Полученные книги:", data);
-            setBooks(data.books || []);
-        } catch (error) {
-            setMessage(error.message);
-        }
+        await Promise.all(
+            issues.map(async (issue) => {
+                if (!readerMap[issue.reader_id]) {
+                    const readerResponse = await fetch(`http://localhost:8080/librarian/getreader/${issue.reader_id}`, {
+                        headers: { 'Authorization': `${token}` },
+                    });
+                    if (readerResponse.ok) {
+                        const readerData = await readerResponse.json();
+                        readerMap[issue.reader_id] = readerData; // readerData содержит reader
+                    }
+                }
+                if (!bookMap[issue.book_id]) {
+                    const bookResponse = await fetch(`http://localhost:8080/librarian/getbook/${issue.book_id}`, {
+                        headers: { 'Authorization': `${token}` },
+                    });
+                    if (bookResponse.ok) {
+                        const bookData = await bookResponse.json();
+                        bookMap[issue.book_id] = bookData; // bookData содержит book
+                    }
+                }
+            })
+        );
+
+        setReaders(readerMap);
+        setBooks(bookMap);
     };
 
     const handleResponse = async (issueId, answer) => {
@@ -81,7 +76,7 @@ function LibrarianIssues() {
             });
             if (!response.ok) throw new Error('Ошибка при отправке ответа на запрос');
             setMessage(`Ответ на запрос успешно отправлен: ${answer}`);
-            fetchIssues(); // Обновляем список запросов после изменения
+            fetchIssues();
         } catch (error) {
             setMessage(error.message);
         }
@@ -92,31 +87,22 @@ function LibrarianIssues() {
             <LibrarianNav />
             <div>
                 <div className="issues-container">
-                {issues.length === 0 ? (
-    <p>Нет доступных запросов на выдачу книг.</p>
-) : (
-    issues.map((issue) => {
-        const readerId = issue.reader_id;
-        const bookId = issue.book_id;
-
-        const reader = readers.find(reader => reader.id === readerId);
-        const book = books.find(book => book.id === bookId);
-
-        return (
-            <div key={issue.id} className="issue-item">
-                <h2>Запрос на книгу: {book ? book.title : 'Неизвестно'}</h2>
-                <p>Читатель: {reader ? `${reader.sur_name} ${reader.first_name}` : 'Неизвестно'}</p>
-                <p>Статус: {issue.status}</p>
-                <div className="buttons-container">
-                    <button onClick={() => handleResponse(issue.id, 'given')}>Выдана</button>
-                    <button onClick={() => handleResponse(issue.id, 'decline')}>Отклонить</button>
-                    <button onClick={() => handleResponse(issue.id, 'returned')}>Возвращена</button>
-                </div>
-            </div>
-        );
-    })
-)}
-
+                    {issues.length === 0 ? (
+                        <p>Нет доступных запросов на выдачу книг.</p>
+                    ) : (
+                        issues.map((issue) => (
+                            <div key={issue.id} className="issue-item">
+                                <h2>Запрос на книгу: {books[issue.book_id]?.title || 'Загрузка...'}</h2>
+                                <p>Читатель: {readers[issue.reader_id] ? `${readers[issue.reader_id].sur_name} ${readers[issue.reader_id].first_name} ${readers[issue.reader_id].patronymic}` : 'Загрузка...'}</p>
+                                <p>Статус: {issue.status}</p>
+                                <div className="buttons-container">
+                                    <button onClick={() => handleResponse(issue.id, 'given')}>Выдана</button>
+                                    <button onClick={() => handleResponse(issue.id, 'decline')}>Отклонить</button>
+                                    <button onClick={() => handleResponse(issue.id, 'returned')}>Возвращена</button>
+                                </div>
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
             {message && <p>{message}</p>}
@@ -125,4 +111,3 @@ function LibrarianIssues() {
 }
 
 export default LibrarianIssues;
- 

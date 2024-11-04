@@ -73,12 +73,18 @@ func InitRoutes(router *gin.Engine, db *gorm.DB) {
 		adminRoutes.GET("/getreaders", func(c *gin.Context) {
 			readers.GetAllReaders(c, db)
 		})
+		adminRoutes.GET("/getreader/:id", func(c *gin.Context) {
+			readers.GetReaderByID(c, db)
+		})
 
 		adminRoutes.GET("/getbooks", func(c *gin.Context) {
 			books.GetAllBooks(c, db)
 		})
 		adminRoutes.GET("/getbooksgenre/:genre", func(c *gin.Context) {
 			books.GetBooksByGenre(c, db)
+		})
+		adminRoutes.GET("/getbook/:id", func(c *gin.Context) {
+			books.GetBookByID(c, db)
 		})
 
 		adminRoutes.GET("/getauthors", func(c *gin.Context) {

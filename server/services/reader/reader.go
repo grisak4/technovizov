@@ -34,7 +34,7 @@ func PostAddIssueHistory(c *gin.Context, db *gorm.DB) {
 }
 
 func PostAddFavorite(c *gin.Context, db *gorm.DB) {
-	var favBook models.Book
+	var favBook models.FavoriteBook
 
 	if err := c.BindJSON(&favBook); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

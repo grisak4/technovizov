@@ -33,3 +33,89 @@
     margin: 10px 0; /* Отступ для сообщения об ошибке */
     font-weight: bold; /* Жирный шрифт */
 }
+
+button {
+    padding: 8px 12px;
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #333; /* Цвет кнопки */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #555; /* Темнее при наведении */
+}
+
+button:disabled {
+    background-color: #cccccc; /* Отключенная кнопка */
+    cursor: not-allowed;
+}
+
+.history-list {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.history-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.genre-filter {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.genre-filter label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.genre-filter input {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.genre-filter button {
+    padding: 8px 12px;
+    background-color: #28a745; /* Цвет кнопки для фильтра */
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.genre-filter button:hover {
+    background-color: #218838; /* Темнее при наведении */
+}
+
+.genre-filter {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.genre-filter label {
+    font-weight: bold;
+}
+
+.genre-filter select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}

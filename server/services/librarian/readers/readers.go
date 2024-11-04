@@ -116,3 +116,19 @@ func GetAllReaders(c *gin.Context, db *gorm.DB) {
 
 	c.JSON(http.StatusOK, readers)
 }
+
+func GetReaderByID(c *gin.Context, db *gorm.DB) {
+	var reader models.Reader
+
+	id := c.Param("id")
+
+	if err := db.Find(&reader, id).Error; err != nil {
+		log.Printf("Error with database: %s\n", err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "error wtih database",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, reader)
+}
