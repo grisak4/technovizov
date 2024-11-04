@@ -56,3 +56,8 @@
 1) React
 2) Js, html, css
 
+
+# Итог:
+
+## Login:
+![alt text](image.png)
